@@ -14,3 +14,7 @@ dump a json file
 etcd /prefix > bar.json
 
 
+This tool is created due to this issue: https://github.com/etcd-io/etcd/issues/8205
+
+Similiar tools: [etcdtool](https://github.com/mickep76/etcdtool)   but not support for etcd v3.
+
