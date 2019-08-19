@@ -40,3 +40,7 @@ func ExampleKV_putErrorHandling() {
 	}
 	log.Println("OK")
 }
+
+// TODO
+// unknown file type
+// dry run
