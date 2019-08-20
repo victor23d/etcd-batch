@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"log"
+	"os"
+	"strings"
 	"time"
 
 	"go.etcd.io/etcd/clientv3"
@@ -10,7 +13,19 @@ import (
 )
 
 func main() {
-	ExampleKV_putErrorHandling()
+	Prefix := os.Args[1]
+	log.Println(Prefix)
+
+	scanner := bufio.NewScanner(os.Stdin)
+	var JsonString strings.Builder
+	for scanner.Scan() {
+		JsonString.WriteString(scanner.Text() + "\n")
+	}
+	if scanner.Err() != nil {
+		panic(scanner.Err())
+	}
+	log.Println(JsonString.String())
+	// ExampleKV_putErrorHandling()
 }
 
 func ExampleKV_putErrorHandling() {
