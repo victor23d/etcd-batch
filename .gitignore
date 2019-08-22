@@ -15,3 +15,23 @@
 # vendor/
 
 *ttt*
+
+# etcd/.gitignore 
+/agent-*
+/coverage
+/covdir
+/gopath
+/gopath.proto
+/release
+/bin
+*.etcd
+*.log
+/etcd
+/hack/insta-discovery/.env
+*.coverprofile
+*.test
+hack/tls-setup/certs
+.idea
+/contrib/raftexample/raftexample
+/contrib/raftexample/raftexample-*
+*.bak
