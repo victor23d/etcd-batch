@@ -20,3 +20,8 @@ This tool is created due to this issue: https://github.com/etcd-io/etcd/issues/8
 
 Similiar tools: [etcdtool](https://github.com/mickep76/etcdtool)   but not support for etcd v3.
 
+TODO
+
+kubectl style command line
+
+kubectl create/delete -f json prefix ""
