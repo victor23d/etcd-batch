@@ -1,29 +1,20 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"path"
-	"runtime"
-
-	"bufio"
 	"context"
-	"github.com/sirupsen/logrus"
 	"log"
-	"os"
-	"strings"
 	"time"
 
+	"github.com/victor23d/etcd-batch/common"
 	"github.com/victor23d/etcd-batch/utils"
 	"go.etcd.io/etcd/clientv3"
 	"go.etcd.io/etcd/etcdserver/api/v3rpc/rpctypes"
 )
 
 func main() {
-	log := setLog()
-	ReadFromFile(log)
+	log := common.SetLog()
 	// ExampleKV_putErrorHandling()
+	utils.FlatMap()
 }
 
 func ExampleKV_putErrorHandling() {
@@ -52,57 +43,7 @@ func ExampleKV_putErrorHandling() {
 		}
 	}
 	log.Println("OK")
-}
-
-func ReadFromCommand() {
-	Prefix := os.Args[1]
-	log.Println(Prefix)
-
-	scanner := bufio.NewScanner(os.Stdin)
-	var JsonString strings.Builder
-	for scanner.Scan() {
-		JsonString.WriteString(scanner.Text() + "\n")
-	}
-	if scanner.Err() != nil {
-		panic(scanner.Err())
-	}
-	log.Println(JsonString.String())
-}
-
-func ReadFromFile(log *logrus.Logger) {
-	b, err := ioutil.ReadFile("foo.json")
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-
-	log.Println(string(b))
-	var mf interface{}
-
-	err = json.Unmarshal(b, &mf)
-	if err != nil {
-		log.Fatalf("error: %s", err.Error())
-	}
-
-	m := mf.(map[string]interface{})
-
-	log.Println(m)
-
-	fp := make(map[string]interface{})
-	utils.FlatMap(m, fp, "/", "", log)
-	log.Println(fp)
-
-}
-
-func setLog() *logrus.Logger {
-	log := logrus.New()
-	log.SetReportCaller(true)
-	log.Formatter = &logrus.TextFormatter{
-		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
-			filename := path.Base(f.File)
-			return fmt.Sprintf("%s()", f.Function), fmt.Sprintf("%s:%d", filename, f.Line)
-		},
-	}
-	return log
+	log.Printf()
 }
 
 // TODO
