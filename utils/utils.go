@@ -1,14 +1,10 @@
 package utils
 
 import (
-	"errors"
 	"github.com/sirupsen/logrus"
 )
 
-func FlatMap(m map[string]interface{}, fp map[string]interface{}, sep string, prefix string, log *logrus.Logger) error {
-	// func prefix2 (prefix string, key string) string{
-	// 	return prefix + key
-	// }
+func FlatMap(m map[string]interface{}, fp map[string]interface{}, sep string, prefix string, log *logrus.Logger) {
 	for k, v := range m {
 		switch vv := v.(type) {
 		case bool:
@@ -26,8 +22,7 @@ func FlatMap(m map[string]interface{}, fp map[string]interface{}, sep string, pr
 		case map[string]interface{}:
 			FlatMap(vv, fp, sep, prefix+k+sep, log)
 		default:
-			return errors.New("Unknown type: " + k + vv.(string))
+			log.Fatalf(k, "is default", vv)
 		}
 	}
-	return nil
 }

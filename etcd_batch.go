@@ -21,12 +21,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var fp map[string]interface{}
-	err = utils.FlatMap(m, fp, "/", "", log)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	// use var instead of make will cause panic: assignment to entry in nil map
+	// var fp map[string]interface{}
+	fp := make(map[string]interface{})
+	utils.FlatMap(m, fp, "/", "", log)
 }
 
 func ExampleKV_putErrorHandling() {
