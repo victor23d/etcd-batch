@@ -22,7 +22,7 @@ func main() {
 	}
 
 	var fp map[string]interface{}
-	err := utils.FlatMap(m, fp, "/", "", log)
+	err = utils.FlatMap(m, fp, "/", "", log)
 	if err != nil {
 		log.Fatal(err)
 	}
