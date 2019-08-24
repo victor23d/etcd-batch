@@ -14,7 +14,19 @@ import (
 func main() {
 	log := common.SetLog()
 	// ExampleKV_putErrorHandling()
-	utils.FlatMap()
+
+	var m map[string]interface{}
+	m, err := common.ReadJSONFromFile("foo.json", log)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var fp map[string]interface{}
+	err := utils.FlatMap(m, fp, "/", "", log)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
 
 func ExampleKV_putErrorHandling() {
@@ -43,7 +55,6 @@ func ExampleKV_putErrorHandling() {
 		}
 	}
 	log.Println("OK")
-	log.Printf()
 }
 
 // TODO
