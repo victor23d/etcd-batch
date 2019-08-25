@@ -26,7 +26,7 @@ flat json file
 etcd_batch flat bar.json
 
 
-### Other
+## Other
 
 This tool is created due to this issue: https://github.com/etcd-io/etcd/issues/8205
 
