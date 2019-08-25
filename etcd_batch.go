@@ -2,13 +2,11 @@ package main
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/victor23d/etcd-batch/common"
 	"github.com/victor23d/etcd-batch/utils"
 	"go.etcd.io/etcd/clientv3"
-	"go.etcd.io/etcd/etcdserver/api/v3rpc/rpctypes"
 )
 
 func main() {
@@ -25,9 +23,8 @@ func main() {
 	// var fp map[string]interface{}
 	fp := make(map[string]interface{})
 	utils.FlatMap(m, fp, "/", "", log)
-}
+	log.Println(fp)
 
-func ExampleKV_putErrorHandling() {
 	cli, err := clientv3.New(clientv3.Config{
 		Endpoints:   []string{"localhost:2379"},
 		DialTimeout: 5 * time.Second,
@@ -38,21 +35,12 @@ func ExampleKV_putErrorHandling() {
 	defer cli.Close()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	_, err = cli.Put(ctx, "foo", "bar")
-	cancel()
+	defer cancel()
+	_, err = utils.KV_putErrorHandling(ctx, cli, "foo", "bar", log)
 	if err != nil {
-		switch err {
-		case context.Canceled:
-			log.Printf("ctx is canceled by another routine: %v\n", err)
-		case context.DeadlineExceeded:
-			log.Printf("ctx is attached with a deadline is exceeded: %v\n", err)
-		case rpctypes.ErrEmptyKey:
-			log.Printf("client-side error: %v\n", err)
-		default:
-			log.Printf("bad cluster endpoints, which are not etcd servers: %v\n", err)
-		}
+		log.Fatal(err)
 	}
-	log.Println("OK")
+
 }
 
 // TODO

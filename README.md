@@ -9,11 +9,11 @@ Support file format JSON, YAML, TOML, envfile
 
 import a json file
 
-etcd /prefix < foo.json
+etcd_batch /prefix < foo.json
 
 dump a json file
 
-etcd /prefix > bar.json
+etcd_batch /prefix > bar.json
 
 
 This tool is created due to this issue: https://github.com/etcd-io/etcd/issues/8205
@@ -24,4 +24,6 @@ TODO
 
 kubectl style command line
 
-kubectl create/delete -f json prefix ""
+etcd_batch apply/delete -n [namespace] -f foo.json
+
+etcd_batch get -n [namespace] > bar.json

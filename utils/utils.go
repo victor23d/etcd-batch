@@ -4,6 +4,9 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// FlatMap Usage
+// fp := make(map[string]interface{})
+// utils.FlatMap(m, fp, "/", "", log)
 func FlatMap(m map[string]interface{}, fp map[string]interface{}, sep string, prefix string, log *logrus.Logger) {
 	for k, v := range m {
 		switch vv := v.(type) {

@@ -9,7 +9,6 @@ import (
 	"runtime"
 
 	"bufio"
-	"github.com/victor23d/etcd-batch/utils"
 	"log"
 	"os"
 	"strings"
@@ -46,11 +45,7 @@ func ReadJSONFromFile(filename string, log *logrus.Logger) (map[string]interface
 
 	m := mf.(map[string]interface{})
 
-	log.Println(m)
-
-	fp := make(map[string]interface{})
-	utils.FlatMap(m, fp, "/", "", log)
-	return fp, nil
+	return m, nil
 }
 
 func SetLog() *logrus.Logger {
