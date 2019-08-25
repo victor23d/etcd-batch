@@ -48,8 +48,7 @@ func ReadJSONFromFile(filename string, log *logrus.Logger) (map[string]interface
 	return m, nil
 }
 
-func SetLog() *logrus.Logger {
-	log := logrus.New()
+func SetLog(log *logrus.Logger) *logrus.Logger {
 	log.SetReportCaller(true)
 	log.Formatter = &logrus.TextFormatter{
 		CallerPrettyfier: func(f *runtime.Frame) (string, string) {

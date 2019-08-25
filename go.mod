@@ -33,6 +33,6 @@ require (
 	go.uber.org/zap v1.10.0 // indirect
 	golang.org/x/crypto v0.0.0-20190820162420-60c769a6c586 // indirect
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect
-	google.golang.org/grpc v1.23.0 // indirect
+	google.golang.org/grpc v1.23.0
 	sigs.k8s.io/yaml v1.1.0 // indirect
 )
