@@ -14,18 +14,18 @@ func FlatMap(m map[string]interface{}, fp map[string]interface{}, sep string, pr
 			fp[prefix+k] = v
 		case string:
 			fp[prefix+k] = v
-			log.Println(fp)
+			// log.Println(fp)
 		// case int:
 		// 	fp[prefix+k] = v
 		// 	log.Println(fp)
 		// 	log.Println("int")
 		case float64:
 			fp[prefix+k] = v
-			log.Println(fp)
+			// log.Println(fp)
 		case map[string]interface{}:
 			FlatMap(vv, fp, sep, prefix+k+sep, log)
 		default:
-			log.Fatalf(k, "is default", vv)
+			log.Fatalf(k, "type known", vv)
 		}
 	}
 }

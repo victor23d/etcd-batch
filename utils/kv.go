@@ -3,31 +3,48 @@ package utils
 import (
 	"context"
 	"github.com/sirupsen/logrus"
+	"strconv"
 
 	"go.etcd.io/etcd/clientv3"
-	"go.etcd.io/etcd/etcdserver/api/v3rpc/rpctypes"
+	// "go.etcd.io/etcd/etcdserver/api/v3rpc/rpctypes"
 )
 
-func KV_putErrorHandling(ctx context.Context, cli *clientv3.Client, key, val string, log *logrus.Logger) (*clientv3.PutResponse, error) {
-	PutResponse, err := cli.Put(ctx, "", "sample_value")
-	if err != nil {
-		switch err {
-		case context.Canceled:
-			log.Printf("ctx is canceled by another routine: %v\n", err)
-		case context.DeadlineExceeded:
-			log.Printf("ctx is attached with a deadline is exceeded: %v\n", err)
-		case rpctypes.ErrEmptyKey:
-			log.Printf("client-side error: %v\n", err)
+var (
+	log = logrus.New()
+)
+
+func StringFlatedMap(fp map[string]interface{}) map[string]string {
+	sfp := make(map[string]string)
+	for k, v := range fp {
+		switch vv := v.(type) {
+		case string:
+			val := v.(string)
+			sfp[k] = val
+		case bool:
+			val := strconv.FormatBool(v.(bool))
+			sfp[k] = val
+		case float64:
+			val := strconv.FormatFloat(v.(float64), 'f', -1, 64)
+			sfp[k] = val
 		default:
-			log.Printf("bad cluster endpoints, which are not etcd servers: %v\n", err)
+			log.Fatalf(k, "type known", vv)
 		}
+		// TODO
 	}
-	log.Println("OK")
-	return PutResponse, err
-	// Output: client-side error: etcdserver: key is not provided
+	return sfp
 }
 
-func KV_getAnddelete(ctx context.Context, cli *clientv3.Client, key, val string, log *logrus.Logger) (*clientv3.DeleteResponse, error) {
+func BatchStringFlatedMap(ctx context.Context, cli *clientv3.Client, sfp map[string]string, prefix string, log *logrus.Logger) error {
+	for k, v := range sfp {
+		_, err := cli.Put(ctx, prefix+k, v)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func KV_getAnddelete(ctx context.Context, cli *clientv3.Client, key string, val string, log *logrus.Logger) (*clientv3.DeleteResponse, error) {
 
 	// count keys about to be deleted
 	gresp, err := cli.Get(ctx, "key", clientv3.WithPrefix())
@@ -46,3 +63,5 @@ func KV_getAnddelete(ctx context.Context, cli *clientv3.Client, key, val string,
 	// Deleted all keys: true
 	return dresp, nil
 }
+
+func Example() {}
