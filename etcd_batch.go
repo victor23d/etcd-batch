@@ -20,8 +20,7 @@ var (
 	log            = logrus.New()
 )
 
-func main() {
-	log := logrus.New()
+func init() {
 	log = common.SetLog(log)
 	// ExampleKV_putErrorHandling()
 	handleArgs(log)

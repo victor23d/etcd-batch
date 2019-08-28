@@ -10,26 +10,27 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// applyCmd represents the apply command
-var applyCmd = &cobra.Command{
-	Use:   "apply",
-	Short: "batch put keys",
-	Long:  `Example: etcd_batch apply -f foo.json --prefix ""`,
+// flatCmd represents the flat command
+var flatCmd = &cobra.Command{
+	Use:   "flat",
+	Short: "flat a hierarchical file",
+	Long:  `Example: etcd_batch flat -f foo.json`,
+
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("apply called")
+		fmt.Println("flat called")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(applyCmd)
+	rootCmd.AddCommand(flatCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// applyCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// flatCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// applyCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// flatCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
