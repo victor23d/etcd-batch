@@ -14,7 +14,7 @@ import (
 var applyCmd = &cobra.Command{
 	Use:   "apply",
 	Short: "batch put keys",
-	Long:  `Example: etcd_batch apply -f foo.json --prefix ""`,
+	Long:  `Example: etcd-batch apply -f foo.json --prefix ""`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("apply called")
 	},

@@ -14,7 +14,7 @@ import (
 var flatCmd = &cobra.Command{
 	Use:   "flat",
 	Short: "flat a hierarchical file",
-	Long:  `Example: etcd_batch flat -f foo.json`,
+	Long:  `Example: etcd-batch flat -f foo.json`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("flat called")

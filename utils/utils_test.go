@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/victor23d/etcd_batch/common"
+	"github.com/victor23d/etcd-batch/common"
 	"testing"
 )
 

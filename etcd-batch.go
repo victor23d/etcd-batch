@@ -30,7 +30,7 @@ func init() {
 func handleArgs(log *logrus.Logger) {
 	if len(os.Args) < 3 {
 		// log.Fatal(len(os.Args))
-		log.Fatal("etcd_batch [ import | dump | flat ] \"prefix\" json")
+		log.Fatal("etcd-batch [ import | dump | flat ] \"prefix\" json")
 	}
 
 	if os.Args[1] == "import" || os.Args[1] == "import-file" {
