@@ -6,17 +6,22 @@ import (
 )
 
 func TestFlatMap(t *testing.T) {
-	log.Println("flat")
+	t.Log("flat")
 	var m map[string]interface{}
 	m, err := common.ReadJSONFromFile("../foo.json", log)
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
 
 	// use var instead of make will cause panic: assignment to entry in nil map
 	// var fp map[string]interface{}
 	fp := make(map[string]interface{})
-	FlatMap(m, fp, "/", "", log)
-	log.Println(fp)
+	FlatMap(m, fp, "/", "")
+	t.Log(fp)
+
+}
+
+func TestStringFlatedMap(t *testing.T) {
+	// sfp := StringFlatedMap(fp)
 
 }

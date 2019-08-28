@@ -5,9 +5,22 @@ This file is part of {{ .appName }}.
 package cmd
 
 import (
-	"fmt"
+	"errors"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/victor23d/etcd-batch/common"
+	"github.com/victor23d/etcd-batch/utils"
+)
+
+var (
+	prefix   string
+	filename string
+	log      = logrus.New()
+)
+
+const (
+	sep = "/"
 )
 
 // flatCmd represents the flat command
@@ -17,20 +30,30 @@ var flatCmd = &cobra.Command{
 	Long:  `Example: etcd-batch flat -f foo.json`,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("flat called")
+		log.Println(filename)
+		if filename == "" {
+			log.Fatal(errors.New("must specify -f"))
+		}
+		m, err := common.ReadJSONFromFile(filename, log)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fp := make(map[string]interface{})
+		utils.FlatMap(m, fp, sep, prefix)
+
+		log.Println("FlatedMap")
+		log.Println(fp)
+
+		sfp := utils.StringFlatedMap(fp)
+		log.Println("stringify")
+		log.Println(sfp)
+		sb := utils.TextSFP(sfp)
+		log.Println(sb.String())
+
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(flatCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// flatCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// flatCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	flatCmd.Flags().StringVarP(&filename, "filename", "f", "", "the file to apply")
 }

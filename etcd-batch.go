@@ -63,12 +63,12 @@ func handleArgs(log *logrus.Logger) {
 			}
 		}
 		fp := make(map[string]interface{})
-		utils.FlatMap(m, fp, "/", "", log)
+		utils.FlatMap(m, fp, "/", "")
 		sfp := utils.StringFlatedMap(fp)
 		log.Println(sfp)
 		// Batch
 		prefix := os.Args[2]
-		err = utils.BatchStringFlatedMap(context.TODO(), cli, sfp, prefix, log)
+		err = utils.BatchStringFlatedMap(context.TODO(), cli, sfp, prefix)
 		if err != nil {
 			log.Fatal(err)
 			// t.Errorf("BatchStringFlatedMap failed")
@@ -87,7 +87,7 @@ func handleArgs(log *logrus.Logger) {
 		// use var instead of make will cause panic: assignment to entry in nil map
 		// var fp map[string]interface{}
 		fp := make(map[string]interface{})
-		utils.FlatMap(m, fp, "/", "", log)
+		utils.FlatMap(m, fp, "/", "")
 		log.Println(fp)
 
 	}

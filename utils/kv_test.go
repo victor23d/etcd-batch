@@ -35,11 +35,6 @@ func TestExample(t *testing.T) {
 	}
 }
 
-func TestStringFlatedMap(t *testing.T) {
-	// sfp := StringFlatedMap(fp)
-
-}
-
 func TestBatchFlatMap(t *testing.T) {
 	t.Log("import")
 
@@ -60,11 +55,11 @@ func TestBatchFlatMap(t *testing.T) {
 		t.Fatal(err)
 	}
 	fp := make(map[string]interface{})
-	FlatMap(m, fp, "/", "", log)
+	FlatMap(m, fp, "/", "")
 	sfp := StringFlatedMap(fp)
 	t.Log(sfp)
 	// Batch
-	err = BatchStringFlatedMap(context.TODO(), cli, sfp, "/PREFIX/", log)
+	err = BatchStringFlatedMap(context.TODO(), cli, sfp, "/PREFIX/")
 	if err != nil {
 		t.Fatal(err)
 		t.Errorf("BatchStringFlatedMap failed")
