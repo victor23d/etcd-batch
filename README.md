@@ -6,26 +6,26 @@ Etcd batch can import a json/yaml/toml/envfile to etcd or dump etcd to a json/ya
 
 Support file format JSON, YAML, TOML, envfile
 
-etcd_batch [ import | import-file | dump | flat ] "prefix" json
+etcd-batch [ import | import-file | dump | flat ] "prefix" json
 
 
 ## EXAMPLE
 
 import json from stdin
 
-etcd_batch import "prefix" < foo.json
+etcd-batch import "prefix" < foo.json
 
 import a json file
 
-etcd_batch import-file "/PREFIX/" foo.json
+etcd-batch import-file "/PREFIX/" foo.json
 
 dump a json file
 
-etcd_batch dump /prefix/ > bar.json
+etcd-batch dump /prefix/ > bar.json
 
 flat json file
 
-etcd_batch flat bar.json
+etcd-batch flat bar.json
 
 
 ## Other
@@ -39,6 +39,6 @@ TODO
 
 kubectl style command line
 
-etcd_batch apply/delete -n [namespace] -f foo.json
+etcd-batch apply/delete -n [namespace] -f foo.json
 
-etcd_batch get -n [namespace] > bar.json
+etcd-batch get -n [namespace] > bar.json

@@ -20,8 +20,7 @@ var (
 	log            = logrus.New()
 )
 
-func main() {
-	log := logrus.New()
+func init() {
 	log = common.SetLog(log)
 	// ExampleKV_putErrorHandling()
 	handleArgs(log)
@@ -31,7 +30,7 @@ func main() {
 func handleArgs(log *logrus.Logger) {
 	if len(os.Args) < 3 {
 		// log.Fatal(len(os.Args))
-		log.Fatal("etcd_batch [ import | dump | flat ] \"prefix\" json")
+		log.Fatal("etcd-batch [ import | dump | flat ] \"prefix\" json")
 	}
 
 	if os.Args[1] == "import" || os.Args[1] == "import-file" {
@@ -64,12 +63,12 @@ func handleArgs(log *logrus.Logger) {
 			}
 		}
 		fp := make(map[string]interface{})
-		utils.FlatMap(m, fp, "/", "", log)
+		utils.FlatMap(m, fp, "/", "")
 		sfp := utils.StringFlatedMap(fp)
 		log.Println(sfp)
 		// Batch
 		prefix := os.Args[2]
-		err = utils.BatchStringFlatedMap(context.TODO(), cli, sfp, prefix, log)
+		err = utils.BatchStringFlatedMap(context.TODO(), cli, sfp, prefix)
 		if err != nil {
 			log.Fatal(err)
 			// t.Errorf("BatchStringFlatedMap failed")
@@ -88,7 +87,7 @@ func handleArgs(log *logrus.Logger) {
 		// use var instead of make will cause panic: assignment to entry in nil map
 		// var fp map[string]interface{}
 		fp := make(map[string]interface{})
-		utils.FlatMap(m, fp, "/", "", log)
+		utils.FlatMap(m, fp, "/", "")
 		log.Println(fp)
 
 	}

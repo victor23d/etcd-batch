@@ -18,11 +18,8 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "etcd-batch",
-	Short: "A brief description of your application",
+	Short: "batch json/yaml/toml/envfile into etcd",
 	Long:  `It's easy to use`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -42,7 +39,6 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringP("prefix", "n", "", "a prefix string insert before the key start")
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.etcd-batch.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
