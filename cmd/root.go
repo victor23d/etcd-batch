@@ -1,7 +1,3 @@
-/*
-TODO LICENSE
-Copyright © 2019 victor23d <victor6742x@gmail.com>
-This file is part of {{ .appName }}.
 // Copyright 2015 The etcd Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,35 +12,20 @@ This file is part of {{ .appName }}.
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package ctlv3 contains the main entry point for the etcdctl for v3 API.
+/*
+Modifications
+Copyright © 2019 victor23d <victor6742x@gmail.com>
 */
+
 package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"go.etcd.io/etcd/etcdctl/ctlv3/command"
 	"os"
 	"time"
 
-	homedir "github.com/mitchellh/go-homedir"
-	"github.com/spf13/viper"
-)
-
-const (
-	cliName        = "etcdctl"
-	cliDescription = "A simple command line client for etcd3."
-
-	defaultDialTimeout      = 2 * time.Second
-	defaultCommandTimeOut   = 5 * time.Second
-	defaultKeepAliveTime    = 2 * time.Second
-	defaultKeepAliveTimeOut = 6 * time.Second
-)
-
-var cfgFile string
-
-var (
-	globalFlags = command.GlobalFlags{}
+	"github.com/spf13/cobra"
+	"go.etcd.io/etcd/etcdctl/ctlv3/command"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -63,8 +44,23 @@ func Execute() {
 	}
 }
 
+const (
+	cliName        = "etcdctl"
+	cliDescription = "A simple command line client for etcd3."
+
+	defaultDialTimeout      = 2 * time.Second
+	defaultCommandTimeOut   = 5 * time.Second
+	defaultKeepAliveTime    = 2 * time.Second
+	defaultKeepAliveTimeOut = 6 * time.Second
+)
+
+var (
+	globalFlags = command.GlobalFlags{}
+)
+
 func init() {
-	cobra.OnInitialize(initConfig)
+	// No config file or ENV to use
+	// cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringP("prefix", "n", "", "a prefix string insert before the key start")
 
@@ -87,36 +83,12 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&globalFlags.InsecureSkipVerify, "insecure-skip-tls-verify", false, "skip server certificate verification")
 	rootCmd.PersistentFlags().StringVar(&globalFlags.TLS.CertFile, "cert", "", "identify secure client using this TLS certificate file")
 	rootCmd.PersistentFlags().StringVar(&globalFlags.TLS.KeyFile, "key", "", "identify secure client using this TLS key file")
-	rootCmd.PersistentFlags().StringVar(&globalFlags.TLS.CAFile, "cacert", "", "verify certificates of TLS-enabled secure servers using this CA bundle")
+	rootCmd.PersistentFlags().StringVar(&globalFlags.TLS.TrustedCAFile, "cacert", "", "verify certificates of TLS-enabled secure servers using this CA bundle")
 	rootCmd.PersistentFlags().StringVar(&globalFlags.User, "user", "", "username[:password] for authentication (prompt if password is not supplied)")
+	rootCmd.PersistentFlags().StringVar(&globalFlags.Password, "password", "", "password for authentication (if this option is used, --user option shouldn't include password)")
 	rootCmd.PersistentFlags().StringVarP(&globalFlags.TLS.ServerName, "discovery-srv", "d", "", "domain name to query for SRV records describing cluster endpoints")
+	rootCmd.PersistentFlags().StringVarP(&globalFlags.DNSClusterServiceName, "discovery-srv-name", "", "", "service name to query when using DNS discovery")
 
-}
-
-// initConfig reads in config file and ENV variables if set.
-func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		// Search config in home directory with name ".etcd-batch" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".etcd-batch")
-	}
-
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
 }
 
 func init() {

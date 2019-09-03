@@ -41,5 +41,3 @@ func KV_getAnddelete(ctx context.Context, cli *clientv3.Client, key string, val 
 	// Deleted all keys: true
 	return dresp, nil
 }
-
-func Example() {}
