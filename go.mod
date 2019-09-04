@@ -6,7 +6,7 @@ require (
 	github.com/bgentry/speakeasy v0.1.0
 	github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f // indirect
 	github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f // indirect
-	github.com/dustin/go-humanize v1.0.0
+	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/gogo/protobuf v1.3.0 // indirect
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/json-iterator/go v1.1.7

@@ -6,8 +6,13 @@ This file is part of {{ .appName }}.
 package cmd
 
 import (
+	"errors"
+
 	"github.com/spf13/cobra"
+	"github.com/victor23d/etcd-batch/common"
+	"github.com/victor23d/etcd-batch/utils"
 	"go.etcd.io/etcd/clientv3"
+	"os"
 	// "go.etcd.io/etcd/etcdctl/ctlv3/command"
 )
 
@@ -15,13 +20,36 @@ import (
 var applyCmd = &cobra.Command{
 	Use:   "apply",
 	Short: "batch put keys",
-	Long:  `Example: etcd-batch apply -f foo.json --prefix ""`,
+	Long:  `Example: etcd-batch apply -f foo.json --prefix "" -d "/"`,
 	Run: func(cmd *cobra.Command, args []string) {
-		putCommandFunc(cmd, args)
+		log.Printf("filename=%s, prefix=%s, delimiter=%s \n", filename, prefix, sep)
+		if filename == "" {
+			log.Fatal(errors.New("must specify -f"))
+		}
+		m, err := common.ReadJSONFromFile(filename, log)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fp := make(map[string]interface{})
+		utils.FlatMap(m, fp, sep, prefix)
+
+		sfp := utils.StringFlatedMap(fp)
+		log.Println(sfp)
+
+		// Suppress message: pkg/flags: unrecognized environment variable ETCDCTL_API
+		os.Unsetenv("ETCDCTL_API")
+		i := 0
+		for k, v := range sfp {
+			i++
+			putCommandFunc(cmd, k+prefix, v)
+		}
+		log.Println("OK, number of keys put:")
+		log.Println(i)
+
 	},
 }
 
-func putCommandFunc(cmd *cobra.Command, args []string) {
+func putCommandFunc(cmd *cobra.Command, key string, value string) {
 	/* opts may contains
 	leaseStr       string
 	putPrevKV      bool
@@ -35,7 +63,10 @@ func putCommandFunc(cmd *cobra.Command, args []string) {
 	ctx, cancel := commandCtx(cmd)
 
 	// resp, err := mustClientFromCmd(cmd).Put(ctx, "foo", "bar", opts...)
-	_, err := mustClientFromCmd(cmd).Put(ctx, "foo", "bar", opts...)
+	cli := mustClientFromCmd(cmd)
+	_, err := cli.Put(ctx, key, value, opts...)
+
+	defer cli.Close()
 
 	cancel()
 	if err != nil {
@@ -43,8 +74,6 @@ func putCommandFunc(cmd *cobra.Command, args []string) {
 	}
 	// Too many dependencies
 	// display.Put(*resp)
-
-	log.Println("OK")
 }
 
 func init() {
@@ -54,7 +83,8 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// applyCmd.PersistentFlags().String("foo", "", "A help for foo")
+	applyCmd.Flags().StringVarP(&filename, "filename", "f", "", "the file to apply")
+	applyCmd.Flags().StringVarP(&sep, "delimiter", "d", "/", "keys are delimited by")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

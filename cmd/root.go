@@ -24,8 +24,17 @@ import (
 	"os"
 	"time"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/victor23d/etcd-batch/common"
 	"go.etcd.io/etcd/etcdctl/ctlv3/command"
+)
+
+var (
+	prefix   string
+	filename string
+	log      = logrus.New()
+	sep      = "/"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -62,9 +71,15 @@ func init() {
 	// No config file or ENV to use
 	// cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringP("prefix", "n", "", "a prefix string insert before the key start")
+	common.SetLog(log)
 
-	// From "go.etcd.io/etcd/etcdctl/ctlv3/ctl.go v3.3.15 TODO upgrade 3.4 username password flag"
+	rootCmd.PersistentFlags().StringVarP(&prefix, "prefix", "n", "", "a prefix string insert before the key start")
+	// remove -d used for delimeter
+	rootCmd.PersistentFlags().StringVar(&globalFlags.TLS.ServerName, "discovery-srv", "", "domain name to query for SRV records describing cluster endpoints")
+
+	//
+	// Modifications end
+	//
 
 	rootCmd.PersistentFlags().StringSliceVar(&globalFlags.Endpoints, "endpoints", []string{"127.0.0.1:2379"}, "gRPC endpoints")
 	rootCmd.PersistentFlags().BoolVar(&globalFlags.Debug, "debug", false, "enable client-side debug logging")
@@ -86,7 +101,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&globalFlags.TLS.TrustedCAFile, "cacert", "", "verify certificates of TLS-enabled secure servers using this CA bundle")
 	rootCmd.PersistentFlags().StringVar(&globalFlags.User, "user", "", "username[:password] for authentication (prompt if password is not supplied)")
 	rootCmd.PersistentFlags().StringVar(&globalFlags.Password, "password", "", "password for authentication (if this option is used, --user option shouldn't include password)")
-	rootCmd.PersistentFlags().StringVarP(&globalFlags.TLS.ServerName, "discovery-srv", "d", "", "domain name to query for SRV records describing cluster endpoints")
+
 	rootCmd.PersistentFlags().StringVarP(&globalFlags.DNSClusterServiceName, "discovery-srv-name", "", "", "service name to query when using DNS discovery")
 
 }

@@ -1,8 +1,10 @@
 package utils
 
 import (
+	"math"
 	"strconv"
 	"strings"
+	// json "github.com/json-iterator/go"
 )
 
 // FlatMap Usage
@@ -28,7 +30,7 @@ func FlatMap(m map[string]interface{}, fp map[string]interface{}, sep string, pr
 	}
 }
 
-// StringFlatedMap stringify FlatedMap
+// StringFlatedMap cast other type in json value to string FlatedMap
 func StringFlatedMap(fp map[string]interface{}) map[string]string {
 	sfp := make(map[string]string)
 	for k, v := range fp {
@@ -50,12 +52,34 @@ func StringFlatedMap(fp map[string]interface{}) map[string]string {
 	return sfp
 }
 
-func TextSFP(fp map[string]string) strings.Builder {
-	var sb strings.Builder
-	sb.WriteString("\n")
-	for k, v := range fp {
-		sb.WriteString(k + "=" + v + "\n")
+// TextSFP turn sfp to etcd get prefix format
+func TextSFP(sfp map[string]string) strings.Builder {
+	var tfp strings.Builder
+	tfp.WriteString("\n")
+	for k, v := range sfp {
+		tfp.WriteString(k + "\n" + v + "\n")
 
 	}
-	return sb
+	return tfp
+}
+
+// TODO
+func UnFlatMap(tfp string, sep string) map[string]interface{} {
+	m := make(map[string]interface{})
+	kvs := strings.Split(tfp, "\n")
+	log.Println(kvs)
+	for i := 0; i < len(kvs); i++ {
+		// test if is a key
+		if math.Mod(float64(i), 2) == 0 {
+			kk := strings.Split(kvs[i], sep)
+
+			// t := reflect.TypeOf(kk)
+			if len(kk) == 1 {
+			}
+			// recursive
+
+		}
+	}
+
+	return m
 }

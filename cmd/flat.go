@@ -7,20 +7,9 @@ package cmd
 import (
 	"errors"
 
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/victor23d/etcd-batch/common"
 	"github.com/victor23d/etcd-batch/utils"
-)
-
-var (
-	prefix   string
-	filename string
-	log      = logrus.New()
-)
-
-const (
-	sep = "/"
 )
 
 // flatCmd represents the flat command
@@ -41,13 +30,11 @@ var flatCmd = &cobra.Command{
 		fp := make(map[string]interface{})
 		utils.FlatMap(m, fp, sep, prefix)
 
-		log.Println("FlatedMap")
-		log.Println(fp)
-
 		sfp := utils.StringFlatedMap(fp)
-		log.Println("stringify")
 		log.Println(sfp)
 		sb := utils.TextSFP(sfp)
+
+		log.Println("=== Text ===")
 		log.Println(sb.String())
 
 	},
