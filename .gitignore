@@ -51,7 +51,6 @@ cover.out
 *.swo
 .DS_Store
 *~
-vendor/*/
 *.bench
 *.debug
 coverage*.out
