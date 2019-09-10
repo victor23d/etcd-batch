@@ -41,7 +41,7 @@ var applyCmd = &cobra.Command{
 		i := 0
 		for k, v := range sfp {
 			i++
-			putCommandFunc(cmd, k+prefix, v)
+			putCommandFunc(cmd, k, v)
 		}
 		log.Println("OK, number of keys put:")
 		log.Println(i)
