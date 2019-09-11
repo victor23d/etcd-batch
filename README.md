@@ -22,6 +22,9 @@ flat json file
 
 etcd-batch flat foo.json
 
+## Install
+
+Just download from Release page.
 
 ## Other
 
