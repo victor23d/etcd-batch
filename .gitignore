@@ -40,7 +40,6 @@ _dist/
 bin/
 
 #hugo
-/hugo
 docs/public*
 /.idea
 *.test
@@ -69,3 +68,9 @@ dist
 /.blackbox/pubring.gpg~
 /.blackbox/pubring.kbx~
 /.blackbox/secring.gpg
+
+
+# this
+etcd-batch
+etcd-batch-linux
+etcd-batch-darwin
