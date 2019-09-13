@@ -1,22 +1,24 @@
 package common
 
 import (
+	"bufio"
 	"fmt"
 	json "github.com/json-iterator/go"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
+	"os"
 	"path"
 	"runtime"
-
-	"bufio"
-	"log"
-	"os"
 	"strings"
+)
+
+var (
+	Log = SetLog(logrus.New())
 )
 
 func ReadStringFromCommand() (string, error) {
 	Prefix := os.Args[1]
-	log.Println(Prefix)
+	Log.Println(Prefix)
 
 	scanner := bufio.NewScanner(os.Stdin)
 	var s strings.Builder
@@ -29,13 +31,13 @@ func ReadStringFromCommand() (string, error) {
 	return s.String(), nil
 }
 
-func ReadJSONFromFile(filename string, log *logrus.Logger) (map[string]interface{}, error) {
+func ReadJSONFromFile(filename string ) (map[string]interface{}, error) {
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
 
-	log.Println(string(b))
+	Log.Println(string(b))
 	var mf interface{}
 
 	err = json.Unmarshal(b, &mf)

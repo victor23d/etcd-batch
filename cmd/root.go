@@ -24,16 +24,13 @@ import (
 	"os"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/victor23d/etcd-batch/common"
 	"go.etcd.io/etcd/etcdctl/ctlv3/command"
 )
 
 var (
 	prefix   string
 	filename string
-	log      = logrus.New()
 	sep      = "/"
 )
 
@@ -70,8 +67,6 @@ var (
 func init() {
 	// No config file or ENV to use
 	// cobra.OnInitialize(initConfig)
-
-	common.SetLog(log)
 
 	rootCmd.PersistentFlags().StringVarP(&prefix, "prefix", "n", "", "a prefix string insert before the key start")
 	// remove -d used for delimeter

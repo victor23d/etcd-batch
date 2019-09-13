@@ -1,15 +1,10 @@
-package utils
+package flat
 
 import (
 	"context"
-	"github.com/sirupsen/logrus"
+	"log"
 
 	"go.etcd.io/etcd/clientv3"
-	// "go.etcd.io/etcd/etcdserver/api/v3rpc/rpctypes"
-)
-
-var (
-	log = logrus.New()
 )
 
 func BatchStringFlatedMap(ctx context.Context, cli *clientv3.Client, sfp map[string]string, prefix string) error {
@@ -22,7 +17,7 @@ func BatchStringFlatedMap(ctx context.Context, cli *clientv3.Client, sfp map[str
 	return nil
 }
 
-func KV_getAnddelete(ctx context.Context, cli *clientv3.Client, key string, val string, log *logrus.Logger) (*clientv3.DeleteResponse, error) {
+func KV_getAnddelete(ctx context.Context, cli *clientv3.Client, key string, val string) (*clientv3.DeleteResponse, error) {
 
 	// count keys about to be deleted
 	gresp, err := cli.Get(ctx, "key", clientv3.WithPrefix())

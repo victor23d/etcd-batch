@@ -6,10 +6,11 @@ package cmd
 
 import (
 	"errors"
+	"github.com/prometheus/common/log"
 
 	"github.com/spf13/cobra"
 	"github.com/victor23d/etcd-batch/common"
-	"github.com/victor23d/etcd-batch/utils"
+	"github.com/victor23d/etcd-batch/flat"
 )
 
 // flatCmd represents the flat command
@@ -19,23 +20,23 @@ var flatCmd = &cobra.Command{
 	Long:  `Example: etcd-batch flat -f foo.json`,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println(filename)
+		log.Info(filename)
 		if filename == "" {
 			log.Fatal(errors.New("must specify -f"))
 		}
-		m, err := common.ReadJSONFromFile(filename, log)
+		m, err := common.ReadJSONFromFile(filename)
 		if err != nil {
 			log.Fatal(err)
 		}
 		fp := make(map[string]interface{})
-		utils.FlatMap(m, fp, sep, prefix)
+		flat.FlatMap(m, fp, sep, prefix)
 
-		sfp := utils.StringFlatedMap(fp)
-		log.Println(sfp)
-		sb := utils.TextSFP(sfp)
+		sfp := flat.StringFlatedMap(fp)
+		log.Info(sfp)
+		sb := flat.TextSFP(sfp)
 
-		log.Println("=== Text ===")
-		log.Println(sb.String())
+		log.Info("=== Text ===")
+		log.Info(sb.String())
 
 	},
 }

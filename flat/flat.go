@@ -1,6 +1,7 @@
-package utils
+package flat
 
 import (
+	"log"
 	"math"
 	"strconv"
 	"strings"
@@ -9,7 +10,7 @@ import (
 
 // FlatMap Usage
 // fp := make(map[string]interface{})
-// utils.FlatMap(m, fp, "/", "" )
+// flat.FlatMap(m, fp, "/", "" )
 func FlatMap(m map[string]interface{}, fp map[string]interface{}, sep string, prefix string) {
 	for k, v := range m {
 		switch vv := v.(type) {
@@ -21,7 +22,6 @@ func FlatMap(m map[string]interface{}, fp map[string]interface{}, sep string, pr
 		//	fp[prefix+k] = v
 		case float64:
 			fp[prefix+k] = v
-			// log.Println(fp)
 		case map[string]interface{}:
 			FlatMap(vv, fp, sep, prefix+k+sep)
 		default:

@@ -1,4 +1,4 @@
-package utils
+package flat
 
 import (
 	"context"

@@ -10,10 +10,10 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/victor23d/etcd-batch/common"
-	"github.com/victor23d/etcd-batch/utils"
+	"github.com/victor23d/etcd-batch/flat"
 	"go.etcd.io/etcd/clientv3"
+	"github.com/prometheus/common/log"
 	"os"
-	// "go.etcd.io/etcd/etcdctl/ctlv3/command"
 )
 
 // applyCmd represents the apply command
@@ -22,19 +22,19 @@ var applyCmd = &cobra.Command{
 	Short: "batch put keys",
 	Long:  `Example: etcd-batch apply -f foo.json --prefix "" -d "/"`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Printf("filename=%s, prefix=%s, delimiter=%s \n", filename, prefix, sep)
+		log.Infof("filename=%s, prefix=%s, delimiter=%s \n", filename, prefix, sep)
 		if filename == "" {
 			log.Fatal(errors.New("must specify -f"))
 		}
-		m, err := common.ReadJSONFromFile(filename, log)
+		m, err := common.ReadJSONFromFile(filename)
 		if err != nil {
 			log.Fatal(err)
 		}
 		fp := make(map[string]interface{})
-		utils.FlatMap(m, fp, sep, prefix)
+		flat.FlatMap(m, fp, sep, prefix)
 
-		sfp := utils.StringFlatedMap(fp)
-		log.Println(sfp)
+		sfp := flat.StringFlatedMap(fp)
+		log.Info(sfp)
 
 		// Suppress message: pkg/flags: unrecognized environment variable ETCDCTL_API
 		os.Unsetenv("ETCDCTL_API")
@@ -43,8 +43,7 @@ var applyCmd = &cobra.Command{
 			i++
 			putCommandFunc(cmd, k, v)
 		}
-		log.Println("OK, number of keys put:")
-		log.Println(i)
+		log.Infof ("OK, number of keys put: %d",i)
 
 	},
 }

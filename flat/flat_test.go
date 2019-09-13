@@ -1,4 +1,4 @@
-package utils
+package flat
 
 import (
 	"github.com/victor23d/etcd-batch/common"
