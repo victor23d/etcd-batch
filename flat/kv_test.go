@@ -50,7 +50,7 @@ func TestBatchFlatMap(t *testing.T) {
 	defer cli.Close() // make sure to close the client
 	// Flat
 	var m map[string]interface{}
-	m, err = common.ReadJSONFromFile("../foo.json", log)
+	m, err = common.ReadJSONFromFile("../foo.json")
 	if err != nil {
 		t.Fatal(err)
 	}

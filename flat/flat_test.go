@@ -8,7 +8,7 @@ import (
 func TestFlatMap(t *testing.T) {
 	t.Log("flat")
 	var m map[string]interface{}
-	m, err := common.ReadJSONFromFile("../foo.json", log)
+	m, err := common.ReadJSONFromFile("../foo.json")
 	if err != nil {
 		t.Fatal(err)
 	}
