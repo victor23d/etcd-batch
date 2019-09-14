@@ -25,7 +25,8 @@ func FlatMap(m map[string]interface{}, fp map[string]interface{}, sep string, pr
 		case map[string]interface{}:
 			FlatMap(vv, fp, sep, prefix+k+sep)
 		default:
-			log.Fatalf(k, "type known", vv)
+			// Never happens
+			log.Panic(k, "type known", vv)
 		}
 	}
 }
@@ -45,9 +46,9 @@ func StringFlatedMap(fp map[string]interface{}) map[string]string {
 			val := strconv.FormatFloat(v.(float64), 'f', -1, 64)
 			sfp[k] = val
 		default:
-			log.Fatalf(k, "type known", vv)
+			// Never happens
+			log.Panic(k, "type known", vv)
 		}
-		// TODO
 	}
 	return sfp
 }
@@ -64,7 +65,7 @@ func TextSFP(sfp map[string]string) strings.Builder {
 }
 
 // TODO
-func UnFlatMap(tfp string, sep string) map[string]interface{} {
+func UnFlatMap(tfp string, sep string) (map[string]interface{}, error){
 	m := make(map[string]interface{})
 	kvs := strings.Split(tfp, "\n")
 	log.Println(kvs)
@@ -80,6 +81,5 @@ func UnFlatMap(tfp string, sep string) map[string]interface{} {
 
 		}
 	}
-
-	return m
+	return m,nil
 }

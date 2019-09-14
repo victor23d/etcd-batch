@@ -36,9 +36,8 @@ func TestExample(t *testing.T) {
 }
 
 func TestBatchFlatMap(t *testing.T) {
-	t.Log("import")
-
 	clientv3.SetLogger(grpclog.NewLoggerV2(os.Stderr, os.Stderr, os.Stderr))
+	t.Log("import")
 
 	cli, err := clientv3.New(clientv3.Config{
 		Endpoints:   endpoints,
@@ -65,3 +64,4 @@ func TestBatchFlatMap(t *testing.T) {
 		t.Errorf("BatchStringFlatedMap failed")
 	}
 }
+

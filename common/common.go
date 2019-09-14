@@ -2,23 +2,17 @@ package common
 
 import (
 	"bufio"
-	"fmt"
 	json "github.com/json-iterator/go"
-	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
-	"path"
-	"runtime"
 	"strings"
+	"log"
 )
 
-var (
-	Log = SetLog(logrus.New())
-)
 
 func ReadStringFromCommand() (string, error) {
 	Prefix := os.Args[1]
-	Log.Println(Prefix)
+	log.Printf("Prefix %s",Prefix)
 
 	scanner := bufio.NewScanner(os.Stdin)
 	var s strings.Builder
@@ -37,7 +31,7 @@ func ReadJSONFromFile(filename string ) (map[string]interface{}, error) {
 		return nil, err
 	}
 
-	Log.Println(string(b))
+	log.Printf("Read JSONfile %s",string(b))
 	var mf interface{}
 
 	err = json.Unmarshal(b, &mf)
@@ -50,13 +44,13 @@ func ReadJSONFromFile(filename string ) (map[string]interface{}, error) {
 	return m, nil
 }
 
-func SetLog(log *logrus.Logger) *logrus.Logger {
-	log.SetReportCaller(true)
-	log.Formatter = &logrus.TextFormatter{
-		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
-			filename := path.Base(f.File)
-			return fmt.Sprintf("%s()", f.Function), fmt.Sprintf("%s:%d", filename, f.Line)
-		},
-	}
-	return log
-}
+//func SetLog(log *logrus.Logger) *logrus.Logger {
+//	log.SetReportCaller(true)
+//	log.Formatter = &logrus.TextFormatter{
+//		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
+//			filename := path.Base(f.File)
+//			return fmt.Sprintf("%s()", f.Function), fmt.Sprintf("%s:%d", filename, f.Line)
+//		},
+//	}
+//	return log
+//}
