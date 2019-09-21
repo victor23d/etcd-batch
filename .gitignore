@@ -50,6 +50,7 @@ cover.out
 *.swo
 .DS_Store
 *~
+vendor/*/
 *.bench
 *.debug
 coverage*.out
@@ -60,6 +61,7 @@ GoBuilds
 dist
 
 # certs
+/certs
 *.crt
 *.cert
 *.csr
