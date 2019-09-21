@@ -8,11 +8,11 @@ package cmd
 import (
 	"errors"
 
+	"github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
 	"github.com/victor23d/etcd-batch/common"
 	"github.com/victor23d/etcd-batch/flat"
 	"go.etcd.io/etcd/clientv3"
-	"github.com/prometheus/common/log"
 	"os"
 )
 
@@ -38,41 +38,36 @@ var applyCmd = &cobra.Command{
 
 		// Suppress message: pkg/flags: unrecognized environment variable ETCDCTL_API
 		os.Unsetenv("ETCDCTL_API")
+
+		/* opts may contains
+		leaseStr       string
+		putPrevKV      bool
+		putIgnoreVal   bool
+		putIgnoreLease bool
+		which this tool doesn't not contain for simplify
+		*/
+
+		opts := []clientv3.OpOption{}
+		ctx, cancel := commandCtx(cmd)
+
+		// resp, err := mustClientFromCmd(cmd).Put(ctx, "foo", "bar", opts...)
+		cli := mustClientFromCmd(cmd)
+
 		i := 0
-		for k, v := range sfp {
+		for key, value := range sfp {
 			i++
-			putCommandFunc(cmd, k, v)
+			_, err := cli.Put(ctx, key, value, opts...)
+			if err != nil {
+				ExitWithError(ExitError, err)
+			}
 		}
-		log.Infof ("OK, number of keys put: %d",i)
+		cancel()
+		log.Infof("OK, number of keys put: %d", i)
+		defer cli.Close()
+		// Too many dependencies
+		// display.Put(*resp)
 
 	},
-}
-
-func putCommandFunc(cmd *cobra.Command, key string, value string) {
-	/* opts may contains
-	leaseStr       string
-	putPrevKV      bool
-	putIgnoreVal   bool
-	putIgnoreLease bool
-	which this tool doesn't not contain for simplify
-	*/
-
-	opts := []clientv3.OpOption{}
-
-	ctx, cancel := commandCtx(cmd)
-
-	// resp, err := mustClientFromCmd(cmd).Put(ctx, "foo", "bar", opts...)
-	cli := mustClientFromCmd(cmd)
-	_, err := cli.Put(ctx, key, value, opts...)
-
-	defer cli.Close()
-
-	cancel()
-	if err != nil {
-		ExitWithError(ExitError, err)
-	}
-	// Too many dependencies
-	// display.Put(*resp)
 }
 
 func init() {
