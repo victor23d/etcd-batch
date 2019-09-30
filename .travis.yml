@@ -1,0 +1,22 @@
+language: go
+# go_import_path: go.etcd.io/etcd
+
+sudo: required
+
+services: docker
+
+go:
+  - 1.13.1
+  - tip
+
+before_install:
+  - echo -e "machine github.com\n  login $USERNAME\n  password $PASSWORD" > ~/.netrc
+
+install:
+  - go get -t -v -d ./...
+
+script: 
+  - go test -v ./...
+
+services:
+  - etcd
