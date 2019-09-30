@@ -30,6 +30,8 @@ test:
 	# etcd \
 	# --listen-client-urls http://0.0.0.0:2379 \
 	# --advertise-client-urls http://0.0.0.0:2379 
+	# vendor broken
+	# go test -v -mod=vendor ./...
 	go test -v -mod=vendor ./...
 	docker stop etcd
 
