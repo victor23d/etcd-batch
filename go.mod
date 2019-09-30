@@ -1,6 +1,6 @@
 module github.com/victor23d/etcd-batch
 
-go 1.12
+go 1.13
 
 require (
 	github.com/alecthomas/units v0.0.0-20190910110746-680d30ca3117 // indirect
