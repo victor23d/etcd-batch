@@ -12,9 +12,11 @@ import (
 )
 
 var (
-	dialTimeout    = 5 * time.Second
-	requestTimeout = 10 * time.Second
-	endpoints      = []string{"localhost:2379"}
+	dialTimeout    = 3 * time.Second
+	RequestTimeout = 6 * time.Second
+	// Doesn't work with docker etcd
+	// endpoints      = []string{"localhost:2379"}
+	endpoints = []string{"127.0.0.1:2379"}
 )
 
 func TestExample(t *testing.T) {
@@ -29,10 +31,12 @@ func TestExample(t *testing.T) {
 	}
 	defer cli.Close() // make sure to close the client
 
-	_, err = cli.Put(context.TODO(), "foo", "bbb")
+	ctx, cancel := context.WithTimeout(context.Background(), RequestTimeout)
+	_, err = cli.Put(ctx, "foo", "bbb")
 	if err != nil {
 		t.Fatal(err)
 	}
+	cancel()
 }
 
 func TestBatchFlatMap(t *testing.T) {
@@ -58,10 +62,11 @@ func TestBatchFlatMap(t *testing.T) {
 	sfp := StringFlatedMap(fp)
 	t.Log(sfp)
 	// Batch
-	err = BatchStringFlatedMap(context.TODO(), cli, sfp, "/PREFIX/")
+	ctx, cancel := context.WithTimeout(context.Background(), RequestTimeout)
+	err = BatchStringFlatedMap(ctx, cli, sfp, "/PREFIX/")
 	if err != nil {
 		t.Fatal(err)
 		t.Errorf("BatchStringFlatedMap failed")
 	}
+	cancel()
 }
-
